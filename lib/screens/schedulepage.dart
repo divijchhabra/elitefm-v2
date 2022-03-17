@@ -21,32 +21,51 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  FlutterLocalNotificationsPlugin ?flutterLocalNotificationsPlugin=FlutterLocalNotificationsPlugin();
-  Future onSelectNotification(String ?payload) {
-
+  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  Future onSelectNotification(String? payload) {
     return showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text("ALERT"),
-          content: Text("CONTENT"),
-        ));
+              title: Text("ALERT"),
+              content: Text("CONTENT"),
+            ));
   }
+
   List<bool> _states = [];
 
-  showNotification(QueryDocumentSnapshot<Object?> document,String day) async {
-
+  showNotification(QueryDocumentSnapshot<Object?> document, String day) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name',
         importance: Importance.max, priority: Priority.high, ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-        android:  androidPlatformChannelSpecifics, iOS:iOSPlatformChannelSpecifics);
-    int dayNumber=day=='Sunday'?1:day=='Monday'?2:day=='Tuesday'?3:day=='Wednesday'?4:day=='Thursday'?5:day=='Friday'?6:day=='Saturday'?7:1;
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+    int dayNumber = day == 'Sunday'
+        ? 1
+        : day == 'Monday'
+            ? 2
+            : day == 'Tuesday'
+                ? 3
+                : day == 'Wednesday'
+                    ? 4
+                    : day == 'Thursday'
+                        ? 5
+                        : day == 'Friday'
+                            ? 6
+                            : day == 'Saturday'
+                                ? 7
+                                : 1;
 
-
-    await flutterLocalNotificationsPlugin!.showWeeklyAtDayAndTime(2, '${document['showname']} is Live!', '',Day(dayNumber),Time(document['starttime'],0,0), platformChannelSpecifics);
-    final snackBar = SnackBar(
-        content: Text('Reminder Added!'));
+    await flutterLocalNotificationsPlugin!.showWeeklyAtDayAndTime(
+        2,
+        '${document['showname']} is Live!',
+        '',
+        Day(dayNumber),
+        Time(document['starttime'], 0, 0),
+        platformChannelSpecifics);
+    final snackBar = SnackBar(content: Text('Reminder Added!'));
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     /*
@@ -67,8 +86,9 @@ class _SchedulePageState extends State<SchedulePage> {
 
      */
   }
+
   Future<dynamic> onDidReceiveLocalNotification(
-      int id, String ?title, String ?body, String ?payload) async {
+      int id, String? title, String? body, String? payload) async {
     // display a dialog with the notification details, tap ok to go to another page
     showDialog(
       context: context,
@@ -79,40 +99,39 @@ class _SchedulePageState extends State<SchedulePage> {
           CupertinoDialogAction(
             isDefaultAction: true,
             child: Text('Ok'),
-            onPressed: () async {
-
-            },
+            onPressed: () async {},
           )
         ],
       ),
     );
   }
+
   @override
   void initState() {
     super.initState();
-    _states.addAll([false, false, false, false, false,false,false]);
+    _states.addAll([false, false, false, false, false, false, false]);
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     initilise();
-
   }
-  initilise()async {
+
+  initilise() async {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+        FlutterLocalNotificationsPlugin();
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('elitefmlogo');
+        AndroidInitializationSettings('elitefmlogo');
     final IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+        IOSInitializationSettings(
+            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     final MacOSInitializationSettings initializationSettingsMacOS =
-    MacOSInitializationSettings();
-    final InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS,
-        macOS: initializationSettingsMacOS);
+        MacOSInitializationSettings();
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS,
+            macOS: initializationSettingsMacOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
-
   }
 
   int? selected;
@@ -122,6 +141,7 @@ class _SchedulePageState extends State<SchedulePage> {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: blackColor,
       ),
       body: SingleChildScrollView(
@@ -163,38 +183,37 @@ class _SchedulePageState extends State<SchedulePage> {
                             },
                             children: [
                               ExpansionPanel(
-
                                 hasIcon: false,
                                 canTapOnHeader: true,
                                 backgroundColor: blackColor,
                                 isExpanded: _states[0],
                                 headerBuilder:
                                     (BuildContext context, bool isExpanded) =>
-                                    ListTile(
-                                      visualDensity: VisualDensity(
-                                          horizontal: -4, vertical: -4),
-                                      dense: true,
-                                      minVerticalPadding: 0,
-                                      // lead ing: Icon(FontAwesomeIcons.bookmark),
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          "Monday",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(right: 5.0),
-                                        child: Divider(
-                                          thickness: 1,
-                                          color: lineColor,
-                                        ),
+                                        ListTile(
+                                  visualDensity: VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  dense: true,
+                                  minVerticalPadding: 0,
+                                  // lead ing: Icon(FontAwesomeIcons.bookmark),
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      "Monday",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor,
                                       ),
                                     ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: lineColor,
+                                    ),
+                                  ),
+                                ),
                                 body: Column(
                                   children: [
                                     Container(
@@ -202,124 +221,163 @@ class _SchedulePageState extends State<SchedulePage> {
                                       // padding: EdgeInsets.only(left: 20, right: 20),
                                       color: blackColor,
                                       child: StreamBuilder(
-                                          stream: FirebaseFirestore.instance.collection("studio").doc("Monday").collection("schedule").snapshots(),
-
-                                          builder: (BuildContext context , AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                                            return
-                                              !snapshot.hasData?Text("Sorry no show availabe") :
-                                              ListView(
-
-                                                children: snapshot.data!.docs.map((document  ) {
-                                                  return Column(
-                                                    children: [
-                                                      Column(
+                                          stream: FirebaseFirestore.instance
+                                              .collection("studio")
+                                              .doc("Monday")
+                                              .collection("schedule")
+                                              .snapshots(),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  snapshot) {
+                                            return !snapshot.hasData
+                                                ? Text("Sorry no show availabe")
+                                                : ListView(
+                                                    children: snapshot
+                                                        .data!.docs
+                                                        .map((document) {
+                                                      return Column(
                                                         children: [
-                                                          Padding(
-                                                            padding: EdgeInsets.only(
-                                                                left: 20, right: 20),
-                                                            child: ListTile(
-                                                              visualDensity: VisualDensity(
-                                                                  horizontal: -4,
-                                                                  vertical: -4),
-                                                              dense: true,
-                                                              // visualDensity: ,
-                                                              minVerticalPadding: 0,
-                                                              horizontalTitleGap: 0,
-                                                              minLeadingWidth: 0,
-                                                              trailing: SizedBox(
-                                                                width: 60,
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                  MainAxisAlignment.end,
-                                                                  children: [
-                                                                    GestureDetector(
+                                                          Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            20,
+                                                                        right:
+                                                                            20),
+                                                                child: ListTile(
+                                                                  visualDensity:
+                                                                      VisualDensity(
+                                                                          horizontal:
+                                                                              -4,
+                                                                          vertical:
+                                                                              -4),
+                                                                  dense: true,
+                                                                  // visualDensity: ,
+                                                                  minVerticalPadding:
+                                                                      0,
+                                                                  horizontalTitleGap:
+                                                                      0,
+                                                                  minLeadingWidth:
+                                                                      0,
+                                                                  trailing:
+                                                                      SizedBox(
+                                                                    width: 60,
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .end,
+                                                                      children: [
+                                                                        GestureDetector(
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.notifications,
+                                                                            color:
+                                                                                redColor,
+                                                                          ),
+                                                                          onTap:
+                                                                              () async {
+                                                                            print('start');
+                                                                            await showNotification(document,
+                                                                                'Monday');
+                                                                          },
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              8,
+                                                                        ),
+                                                                        GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            Share.share('rj name : ${document["showname"]} , timings : ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00');
+                                                                          },
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.share,
+                                                                            color:
+                                                                                redColor,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  leading:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            18.0,
+                                                                        top: 3),
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .circle,
+                                                                      size: 15,
+                                                                      color:
+                                                                          redColor,
+                                                                    ),
+                                                                  ),
+                                                                  title: Text(
+                                                                    ' ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color:
+                                                                          redColor,
+                                                                      fontSize:
+                                                                          12,
+                                                                    ),
+                                                                  ),
 
-                                                                      child: Icon(
-                                                                        Icons.notifications,
-                                                                        color: redColor,
+                                                                  subtitle:
+                                                                      Text(
+                                                                    document[
+                                                                        "showname"],
+                                                                    style: TextStyle(
+                                                                        color:
+                                                                            whiteColor,
+                                                                        fontSize:
+                                                                            10),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              document["starttime"] ==
+                                                                      2
+                                                                  ? Padding(
+                                                                      padding: EdgeInsets.only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                      child: SvgPicture
+                                                                          .asset(
+                                                                        'assets/redline.svg',
+                                                                        // height: 20,
+                                                                        width:
+                                                                            500,
+                                                                        fit: BoxFit
+                                                                            .cover,
                                                                       ),
-                                                                      onTap: () async {
-                                                                        print('start');
-                                                                        await  showNotification(document,'Monday');
-                                                                      },
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: 8,
-                                                                    ),
-                                                                    GestureDetector(
-                                                                      onTap: () {
-                                                                        Share.share('rj name : ${document["showname"]} , timings : ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00');
-                                                                      },
-                                                                      child: Icon(
-                                                                        Icons.share,
-                                                                        color: redColor,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              leading: Padding(
-                                                                padding:
-                                                                const EdgeInsets.only(
-                                                                    right: 18.0, top: 3),
-                                                                child: Icon(
-                                                                  Icons.circle,
-                                                                  size: 15,
-                                                                  color: redColor,
-                                                                ),
-                                                              ),
-                                                              title: Text(
-                                                                ' ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00',
-                                                                style: TextStyle(
-                                                                  color: redColor,
-                                                                  fontSize: 12,
-                                                                ),
-                                                              ),
-
-                                                              subtitle: Text(
-                                                                document["showname"],
-                                                                style: TextStyle(
-                                                                    color: whiteColor,
-                                                                    fontSize: 10),
-                                                              ),
-                                                            ),
+                                                                    )
+                                                                  : Padding(
+                                                                      padding: EdgeInsets.only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                      child:
+                                                                          Divider(
+                                                                        // endIndent: 30,
+                                                                        thickness:
+                                                                            1,
+                                                                        color:
+                                                                            lineColor,
+                                                                      )),
+                                                            ],
                                                           ),
-                                                          document["starttime"]==2?
-                                                          Padding(
-                                                            padding: EdgeInsets.only(left: 20,right: 20),
-                                                            child: SvgPicture.asset(
-                                                              'assets/redline.svg',
-                                                              // height: 20,
-                                                              width: 500,
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          )
-
-                                                              :
-                                                          Padding(
-                                                              padding: EdgeInsets.only(
-                                                                  left: 20, right: 20),
-                                                              child: Divider(
-                                                                // endIndent: 30,
-                                                                thickness: 1,
-                                                                color: lineColor,
-                                                              )
-
-                                                          ),
-
-
                                                         ],
-                                                      ),
-
-
-
-
-
-                                                    ],
+                                                      );
+                                                    }).toList(),
                                                   );
-                                                }).toList(),
-                                              );
                                           }),
                                     ),
                                   ],
@@ -332,149 +390,188 @@ class _SchedulePageState extends State<SchedulePage> {
                                 isExpanded: _states[1],
                                 headerBuilder:
                                     (BuildContext context, bool isExpanded) =>
-                                    ListTile(
-                                      visualDensity: VisualDensity(
-                                          horizontal: -4, vertical: -4),
-                                      dense: true,
-                                      minVerticalPadding: 0,
-                                      // lead ing: Icon(FontAwesomeIcons.bookmark),
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          "Tuesday",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(right: 5.0),
-                                        child: Divider(
-                                          thickness: 1,
-                                          color: lineColor,
-                                        ),
+                                        ListTile(
+                                  visualDensity: VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  dense: true,
+                                  minVerticalPadding: 0,
+                                  // lead ing: Icon(FontAwesomeIcons.bookmark),
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      "Tuesday",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor,
                                       ),
                                     ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: lineColor,
+                                    ),
+                                  ),
+                                ),
                                 body: Container(
                                   height: 270,
                                   // padding: EdgeInsets.only(left: 20, right: 20),
                                   color: blackColor,
                                   child: StreamBuilder(
-                                      stream: FirebaseFirestore.instance.collection("studio").doc("Tuesday").collection("schedule").snapshots(),
-
-                                      builder: (BuildContext context , AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                                        return
-                                          !snapshot.hasData?
-
-                                          Text("Sorry no show availabe") :
-                                          ListView(
-
-                                            children: snapshot.data!.docs.map((document  ) {
-                                              return Column(
-                                                children: [
-                                                  Column(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("studio")
+                                          .doc("Tuesday")
+                                          .collection("schedule")
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        return !snapshot.hasData
+                                            ? Text("Sorry no show availabe")
+                                            : ListView(
+                                                children: snapshot.data!.docs
+                                                    .map((document) {
+                                                  return Column(
                                                     children: [
-                                                      Padding(
-                                                        padding: EdgeInsets.only(
-                                                            left: 20, right: 20),
-                                                        child: ListTile(
-                                                          visualDensity: VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                          dense: true,
-                                                          // visualDensity: ,
-                                                          minVerticalPadding: 0,
-                                                          horizontalTitleGap: 0,
-                                                          minLeadingWidth: 0,
-                                                          trailing: SizedBox(
-                                                            width: 60,
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment.end,
-                                                              children: [
-                                                                GestureDetector(
-                                                                  onTap:() async {
-                                                                    await  showNotification(document,'Tuesday');
-
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.notifications,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 8,
-                                                                ),
-                                                                GestureDetector(
-                                                                  onTap: () {
-                                                                    Share.share('rj name : ${document["showname"]} , timings : ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00');
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.share,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          leading: Padding(
+                                                      Column(
+                                                        children: [
+                                                          Padding(
                                                             padding:
-                                                            const EdgeInsets.only(
-                                                                right: 18.0, top: 3),
-                                                            child: Icon(
-                                                              Icons.circle,
-                                                              size: 15,
-                                                              color: redColor,
+                                                                EdgeInsets.only(
+                                                                    left: 20,
+                                                                    right: 20),
+                                                            child: ListTile(
+                                                              visualDensity:
+                                                                  VisualDensity(
+                                                                      horizontal:
+                                                                          -4,
+                                                                      vertical:
+                                                                          -4),
+                                                              dense: true,
+                                                              // visualDensity: ,
+                                                              minVerticalPadding:
+                                                                  0,
+                                                              horizontalTitleGap:
+                                                                  0,
+                                                              minLeadingWidth:
+                                                                  0,
+                                                              trailing:
+                                                                  SizedBox(
+                                                                width: 60,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () async {
+                                                                        await showNotification(
+                                                                            document,
+                                                                            'Tuesday');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .notifications,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 8,
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        Share.share(
+                                                                            'rj name : ${document["showname"]} , timings : ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .share,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              leading: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            18.0,
+                                                                        top: 3),
+                                                                child: Icon(
+                                                                  Icons.circle,
+                                                                  size: 15,
+                                                                  color:
+                                                                      redColor,
+                                                                ),
+                                                              ),
+                                                              title: Text(
+                                                                ' ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      redColor,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+
+                                                              subtitle: Text(
+                                                                document[
+                                                                    "showname"],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        10),
+                                                              ),
                                                             ),
                                                           ),
-                                                          title: Text(
-                                                            ' ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00',
-                                                            style: TextStyle(
-                                                              color: redColor,
-                                                              fontSize: 12,
-                                                            ),
-                                                          ),
-
-                                                          subtitle: Text(
-                                                            document["showname"],
-                                                            style: TextStyle(
-                                                                color: whiteColor,
-                                                                fontSize: 10),
-                                                          ),
-                                                        ),
+                                                          document["starttime"] ==
+                                                                  2
+                                                              ? Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    'assets/redline.svg',
+                                                                    // height: 20,
+                                                                    width: 500,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  ),
+                                                                )
+                                                              : Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      Divider(
+                                                                    // endIndent: 30,
+                                                                    thickness:
+                                                                        1,
+                                                                    color:
+                                                                        lineColor,
+                                                                  )),
+                                                        ],
                                                       ),
-
-
-                                                      document["starttime"]==2?
-                                                      Padding(
-                                                        padding: EdgeInsets.only(left: 20,right: 20),
-                                                        child: SvgPicture.asset(
-                                                          'assets/redline.svg',
-                                                          // height: 20,
-                                                          width: 500,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      )
-
-                                                          :
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              left: 20, right: 20),
-                                                          child: Divider(
-                                                            // endIndent: 30,
-                                                            thickness: 1,
-                                                            color: lineColor,
-                                                          )
-
-                                                      ),
-
-
-                                                    ],
-                                                  ),
-                                                  /*
+                                                      /*
                                                   Padding(
                                                     padding: EdgeInsets.only(left: 20,right: 20),
                                                     child: SvgPicture.asset(
@@ -486,10 +583,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                                   ),
 
                                                    */
-                                                ],
+                                                    ],
+                                                  );
+                                                }).toList(),
                                               );
-                                            }).toList(),
-                                          );
                                       }),
                                 ),
                               ),
@@ -500,142 +597,164 @@ class _SchedulePageState extends State<SchedulePage> {
                                 isExpanded: _states[2],
                                 headerBuilder:
                                     (BuildContext context, bool isExpanded) =>
-                                    ListTile(
-                                      visualDensity: VisualDensity(
-                                          horizontal: -4, vertical: -4),
-                                      dense: true,
-                                      minVerticalPadding: 0,
-                                      // lead ing: Icon(FontAwesomeIcons.bookmark),
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          "Wednesday",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(right: 5.0),
-                                        child: Divider(
-                                          thickness: 1,
-                                          color: lineColor,
-                                        ),
+                                        ListTile(
+                                  visualDensity: VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  dense: true,
+                                  minVerticalPadding: 0,
+                                  // lead ing: Icon(FontAwesomeIcons.bookmark),
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      "Wednesday",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor,
                                       ),
                                     ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: lineColor,
+                                    ),
+                                  ),
+                                ),
                                 body: Container(
                                   height: 270,
                                   // padding: EdgeInsets.only(left: 20, right: 20),
                                   color: blackColor,
                                   child: StreamBuilder(
-                                      stream: FirebaseFirestore.instance.collection("studio").doc("Wednesday").collection("schedule").snapshots(),
-
-                                      builder: (BuildContext context , AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                                        return
-                                          !snapshot.hasData?Text("Sorry no show availabe") :
-                                          ListView(
-
-
-                                            children: snapshot.data!.docs.map((document  ) {
-                                              return Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 20, right: 20),
-                                                    child: ListTile(
-                                                      visualDensity: VisualDensity(
-                                                          horizontal: -4,
-                                                          vertical: -4),
-                                                      dense: true,
-                                                      // visualDensity: ,
-                                                      minVerticalPadding: 0,
-                                                      horizontalTitleGap: 0,
-                                                      minLeadingWidth: 0,
-                                                      trailing: SizedBox(
-                                                        width: 60,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                          children: [
-                                                            GestureDetector(
-                                                              onTap:() async {
-                                                                await  showNotification(document,'Wednesday');
-
-                                                              },
-                                                              child: Icon(
-                                                                Icons.notifications,
-                                                                color: redColor,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width: 8,
-                                                            ),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                Share.share('rj name : ${document["showname"]} , timings : ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00');
-                                                              },
-                                                              child: Icon(
-                                                                Icons.share,
-                                                                color: redColor,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      leading: Padding(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("studio")
+                                          .doc("Wednesday")
+                                          .collection("schedule")
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        return !snapshot.hasData
+                                            ? Text("Sorry no show availabe")
+                                            : ListView(
+                                                children: snapshot.data!.docs
+                                                    .map((document) {
+                                                  return Column(
+                                                    children: [
+                                                      Padding(
                                                         padding:
-                                                        const EdgeInsets.only(
-                                                            right: 18.0, top: 3),
-                                                        child: Icon(
-                                                          Icons.circle,
-                                                          size: 15,
-                                                          color: redColor,
+                                                            EdgeInsets.only(
+                                                                left: 20,
+                                                                right: 20),
+                                                        child: ListTile(
+                                                          visualDensity:
+                                                              VisualDensity(
+                                                                  horizontal:
+                                                                      -4,
+                                                                  vertical: -4),
+                                                          dense: true,
+                                                          // visualDensity: ,
+                                                          minVerticalPadding: 0,
+                                                          horizontalTitleGap: 0,
+                                                          minLeadingWidth: 0,
+                                                          trailing: SizedBox(
+                                                            width: 60,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                GestureDetector(
+                                                                  onTap:
+                                                                      () async {
+                                                                    await showNotification(
+                                                                        document,
+                                                                        'Wednesday');
+                                                                  },
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .notifications,
+                                                                    color:
+                                                                        redColor,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 8,
+                                                                ),
+                                                                GestureDetector(
+                                                                  onTap: () {
+                                                                    Share.share(
+                                                                        'rj name : ${document["showname"]} , timings : ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00');
+                                                                  },
+                                                                  child: Icon(
+                                                                    Icons.share,
+                                                                    color:
+                                                                        redColor,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          leading: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 18.0,
+                                                                    top: 3),
+                                                            child: Icon(
+                                                              Icons.circle,
+                                                              size: 15,
+                                                              color: redColor,
+                                                            ),
+                                                          ),
+                                                          title: Text(
+                                                            ' ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00',
+                                                            style: TextStyle(
+                                                              color: redColor,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+
+                                                          subtitle: Text(
+                                                            document[
+                                                                "showname"],
+                                                            style: TextStyle(
+                                                                color:
+                                                                    whiteColor,
+                                                                fontSize: 10),
+                                                          ),
                                                         ),
                                                       ),
-                                                      title: Text(
-                                                        ' ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00',
-                                                        style: TextStyle(
-                                                          color: redColor,
-                                                          fontSize: 12,
-                                                        ),
-                                                      ),
-
-                                                      subtitle: Text(
-                                                        document["showname"],
-                                                        style: TextStyle(
-                                                            color: whiteColor,
-                                                            fontSize: 10),
-                                                      ),
-                                                    ),
-                                                  ),
-
-
-                                                  document["starttime"]==2?
-                                                  Padding(
-                                                    padding: EdgeInsets.only(left: 20,right: 20),
-                                                    child: SvgPicture.asset(
-                                                      'assets/redline.svg',
-                                                      // height: 20,
-                                                      width: 500,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  )
-
-                                                      :
-                                                  Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 20, right: 20),
-                                                      child: Divider(
-                                                        // endIndent: 30,
-                                                        thickness: 1,
-                                                        color: lineColor,
-                                                      )
-
-                                                  ),
-                                                  /*
+                                                      document["starttime"] == 2
+                                                          ? Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left: 20,
+                                                                      right:
+                                                                          20),
+                                                              child: SvgPicture
+                                                                  .asset(
+                                                                'assets/redline.svg',
+                                                                // height: 20,
+                                                                width: 500,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            )
+                                                          : Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left: 20,
+                                                                      right:
+                                                                          20),
+                                                              child: Divider(
+                                                                // endIndent: 30,
+                                                                thickness: 1,
+                                                                color:
+                                                                    lineColor,
+                                                              )),
+                                                      /*
                                                   Padding(
                                                     padding: EdgeInsets.only(left: 20,right: 20),
                                                     child: SvgPicture.asset(
@@ -646,11 +765,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                                     ),
                                                   ),
 */
-
-                                                ],
+                                                    ],
+                                                  );
+                                                }).toList(),
                                               );
-                                            }).toList(),
-                                          );
                                       }),
                                 ),
                               ),
@@ -661,156 +779,196 @@ class _SchedulePageState extends State<SchedulePage> {
                                 isExpanded: _states[3],
                                 headerBuilder:
                                     (BuildContext context, bool isExpanded) =>
-                                    ListTile(
-                                      visualDensity: VisualDensity(
-                                          horizontal: -4, vertical: -4),
-                                      dense: true,
-                                      minVerticalPadding: 0,
-                                      // lead ing: Icon(FontAwesomeIcons.bookmark),
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          "Thursday",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(right: 5.0),
-                                        child: Divider(
-                                          thickness: 1,
-                                          color: lineColor,
-                                        ),
+                                        ListTile(
+                                  visualDensity: VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  dense: true,
+                                  minVerticalPadding: 0,
+                                  // lead ing: Icon(FontAwesomeIcons.bookmark),
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      "Thursday",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor,
                                       ),
                                     ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: lineColor,
+                                    ),
+                                  ),
+                                ),
                                 body: Container(
                                   height: 270,
                                   // padding: EdgeInsets.only(left: 20, right: 20),
                                   color: blackColor,
                                   child: StreamBuilder(
-                                      stream: FirebaseFirestore.instance.collection("studio").doc("Thursday").collection("schedule").snapshots(),
-
-                                      builder: (BuildContext context , AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                                        return
-                                          !snapshot.hasData
-
-                                              ?
-
-                                          Text(
-                                            'Sorry no shows available',
-                                            style: TextStyle(
-                                              color: redColor,
-                                              fontSize: 12,
-                                            ),
-                                          ) :
-                                          ListView(
-
-                                            children: snapshot.data!.docs.map((document  ) {
-                                              return Column(
-                                                children: [
-                                                  Column(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("studio")
+                                          .doc("Thursday")
+                                          .collection("schedule")
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        return !snapshot.hasData
+                                            ? Text(
+                                                'Sorry no shows available',
+                                                style: TextStyle(
+                                                  color: redColor,
+                                                  fontSize: 12,
+                                                ),
+                                              )
+                                            : ListView(
+                                                children: snapshot.data!.docs
+                                                    .map((document) {
+                                                  return Column(
                                                     children: [
-                                                      Padding(
-                                                        padding: EdgeInsets.only(
-                                                            left: 20, right: 20),
-                                                        child: ListTile(
-                                                          visualDensity: VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                          dense: true,
-                                                          // visualDensity: ,
-                                                          minVerticalPadding: 0,
-                                                          horizontalTitleGap: 0,
-                                                          minLeadingWidth: 0,
-                                                          trailing: SizedBox(
-                                                            width: 60,
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment.end,
-                                                              children: [
-                                                                GestureDetector(
-                                                                  onTap:()async {
-                                                                    await showNotification(document,'Thursday');
-                                                                    print('done');
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.notifications,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 8,
-                                                                ),
-                                                                GestureDetector(
-                                                                  onTap: () {
-                                                                    Share.share('rj name : ${document["showname"]} , timings : ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00');
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.share,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          leading: Padding(
+                                                      Column(
+                                                        children: [
+                                                          Padding(
                                                             padding:
-                                                            const EdgeInsets.only(
-                                                                right: 18.0, top: 3),
-                                                            child: Icon(
-                                                              Icons.circle,
-                                                              size: 15,
-                                                              color: redColor,
+                                                                EdgeInsets.only(
+                                                                    left: 20,
+                                                                    right: 20),
+                                                            child: ListTile(
+                                                              visualDensity:
+                                                                  VisualDensity(
+                                                                      horizontal:
+                                                                          -4,
+                                                                      vertical:
+                                                                          -4),
+                                                              dense: true,
+                                                              // visualDensity: ,
+                                                              minVerticalPadding:
+                                                                  0,
+                                                              horizontalTitleGap:
+                                                                  0,
+                                                              minLeadingWidth:
+                                                                  0,
+                                                              trailing:
+                                                                  SizedBox(
+                                                                width: 60,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () async {
+                                                                        await showNotification(
+                                                                            document,
+                                                                            'Thursday');
+                                                                        print(
+                                                                            'done');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .notifications,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 8,
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        Share.share(
+                                                                            'rj name : ${document["showname"]} , timings : ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .share,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              leading: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            18.0,
+                                                                        top: 3),
+                                                                child: Icon(
+                                                                  Icons.circle,
+                                                                  size: 15,
+                                                                  color:
+                                                                      redColor,
+                                                                ),
+                                                              ),
+                                                              title: Text(
+                                                                ' ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      redColor,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+
+                                                              subtitle: Text(
+                                                                document[
+                                                                    "showname"],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        10),
+                                                              ),
                                                             ),
                                                           ),
-                                                          title: Text(
-                                                            ' ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00',
-                                                            style: TextStyle(
-                                                              color: redColor,
-                                                              fontSize: 12,
-                                                            ),
-                                                          ),
-
-                                                          subtitle: Text(
-                                                            document["showname"],
-                                                            style: TextStyle(
-                                                                color: whiteColor,
-                                                                fontSize: 10),
-                                                          ),
-                                                        ),
+                                                          document["starttime"] ==
+                                                                  2
+                                                              ? Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    'assets/redline.svg',
+                                                                    // height: 20,
+                                                                    width: 500,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  ),
+                                                                )
+                                                              : Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      Divider(
+                                                                    // endIndent: 30,
+                                                                    thickness:
+                                                                        1,
+                                                                    color:
+                                                                        lineColor,
+                                                                  )),
+                                                        ],
                                                       ),
-
-                                                      document["starttime"]==2?
-                                                      Padding(
-                                                        padding: EdgeInsets.only(left: 20,right: 20),
-                                                        child: SvgPicture.asset(
-                                                          'assets/redline.svg',
-                                                          // height: 20,
-                                                          width: 500,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      )
-
-                                                          :
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              left: 20, right: 20),
-                                                          child: Divider(
-                                                            // endIndent: 30,
-                                                            thickness: 1,
-                                                            color: lineColor,
-                                                          )
-
-                                                      ),
-
-
-                                                    ],
-                                                  ),
-                                                  /*
+                                                      /*
                                                   Padding(
                                                     padding: EdgeInsets.only(left: 20,right: 20),
                                                     child: SvgPicture.asset(
@@ -824,10 +982,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                                   ),
 
                                                    */
-                                                ],
+                                                    ],
+                                                  );
+                                                }).toList(),
                                               );
-                                            }).toList(),
-                                          );
                                       }),
                                 ),
                               ),
@@ -838,146 +996,188 @@ class _SchedulePageState extends State<SchedulePage> {
                                 isExpanded: _states[4],
                                 headerBuilder:
                                     (BuildContext context, bool isExpanded) =>
-                                    ListTile(
-                                      visualDensity: VisualDensity(
-                                          horizontal: -4, vertical: -4),
-                                      dense: true,
-                                      minVerticalPadding: 0,
-                                      // lead ing: Icon(FontAwesomeIcons.bookmark),
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          "Friday",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(right: 5.0),
-                                        child: Divider(
-                                          thickness: 1,
-                                          color: lineColor,
-                                        ),
+                                        ListTile(
+                                  visualDensity: VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  dense: true,
+                                  minVerticalPadding: 0,
+                                  // lead ing: Icon(FontAwesomeIcons.bookmark),
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      "Friday",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor,
                                       ),
                                     ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: lineColor,
+                                    ),
+                                  ),
+                                ),
                                 body: Container(
                                   height: 270,
                                   // padding: EdgeInsets.only(left: 20, right: 20),
                                   color: blackColor,
                                   child: StreamBuilder(
-                                      stream: FirebaseFirestore.instance.collection("studio").doc("Friday").collection("schedule").snapshots(),
-
-                                      builder: (BuildContext context , AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                                        return
-                                          !snapshot.hasData?Text("Sorry no show availabe") :
-                                          ListView(
-
-                                            children: snapshot.data!.docs.map((document  ) {
-                                              return Column(
-                                                children: [
-                                                  Column(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("studio")
+                                          .doc("Friday")
+                                          .collection("schedule")
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        return !snapshot.hasData
+                                            ? Text("Sorry no show availabe")
+                                            : ListView(
+                                                children: snapshot.data!.docs
+                                                    .map((document) {
+                                                  return Column(
                                                     children: [
-                                                      Padding(
-                                                        padding: EdgeInsets.only(
-                                                            left: 20, right: 20),
-                                                        child: ListTile(
-                                                          visualDensity: VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                          dense: true,
-                                                          // visualDensity: ,
-                                                          minVerticalPadding: 0,
-                                                          horizontalTitleGap: 0,
-                                                          minLeadingWidth: 0,
-                                                          trailing: SizedBox(
-                                                            width: 60,
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment.end,
-                                                              children: [
-                                                                GestureDetector(
-                                                                  onTap:() async {
-                                                                    await  showNotification(document,'Friday');
-
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.notifications,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 8,
-                                                                ),
-                                                                GestureDetector(
-                                                                  onTap: () {
-                                                                    Share.share('rj name : ${document["showname"]} , timings : ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00');
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.share,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          leading: Padding(
+                                                      Column(
+                                                        children: [
+                                                          Padding(
                                                             padding:
-                                                            const EdgeInsets.only(
-                                                                right: 18.0, top: 3),
-                                                            child: Icon(
-                                                              Icons.circle,
-                                                              size: 15,
-                                                              color: redColor,
+                                                                EdgeInsets.only(
+                                                                    left: 20,
+                                                                    right: 20),
+                                                            child: ListTile(
+                                                              visualDensity:
+                                                                  VisualDensity(
+                                                                      horizontal:
+                                                                          -4,
+                                                                      vertical:
+                                                                          -4),
+                                                              dense: true,
+                                                              // visualDensity: ,
+                                                              minVerticalPadding:
+                                                                  0,
+                                                              horizontalTitleGap:
+                                                                  0,
+                                                              minLeadingWidth:
+                                                                  0,
+                                                              trailing:
+                                                                  SizedBox(
+                                                                width: 60,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () async {
+                                                                        await showNotification(
+                                                                            document,
+                                                                            'Friday');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .notifications,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 8,
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        Share.share(
+                                                                            'rj name : ${document["showname"]} , timings : ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .share,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              leading: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            18.0,
+                                                                        top: 3),
+                                                                child: Icon(
+                                                                  Icons.circle,
+                                                                  size: 15,
+                                                                  color:
+                                                                      redColor,
+                                                                ),
+                                                              ),
+                                                              title: Text(
+                                                                ' ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      redColor,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+
+                                                              subtitle: Text(
+                                                                document[
+                                                                    "showname"],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        10),
+                                                              ),
                                                             ),
                                                           ),
-                                                          title: Text(
-                                                            ' ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00',
-                                                            style: TextStyle(
-                                                              color: redColor,
-                                                              fontSize: 12,
-                                                            ),
-                                                          ),
-
-                                                          subtitle: Text(
-                                                            document["showname"],
-                                                            style: TextStyle(
-                                                                color: whiteColor,
-                                                                fontSize: 10),
-                                                          ),
-                                                        ),
+                                                          document["starttime"] ==
+                                                                  2
+                                                              ? Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    'assets/redline.svg',
+                                                                    // height: 20,
+                                                                    width: 500,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  ),
+                                                                )
+                                                              : Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      Divider(
+                                                                    // endIndent: 30,
+                                                                    thickness:
+                                                                        1,
+                                                                    color:
+                                                                        lineColor,
+                                                                  )),
+                                                        ],
                                                       ),
-
-                                                      document["starttime"]==2?
-                                                      Padding(
-                                                        padding: EdgeInsets.only(left: 20,right: 20),
-                                                        child: SvgPicture.asset(
-                                                          'assets/redline.svg',
-                                                          // height: 20,
-                                                          width: 500,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      )
-
-                                                          :
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              left: 20, right: 20),
-                                                          child: Divider(
-                                                            // endIndent: 30,
-                                                            thickness: 1,
-                                                            color: lineColor,
-                                                          )
-
-                                                      ),
-
-
-                                                    ],
-                                                  ),
-                                                  /*
+                                                      /*
                                                   Padding(
                                                     padding: EdgeInsets.only(left: 20,right: 20),
                                                     child: SvgPicture.asset(
@@ -989,10 +1189,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                                   ),
 
                                                    */
-                                                ],
+                                                    ],
+                                                  );
+                                                }).toList(),
                                               );
-                                            }).toList(),
-                                          );
                                       }),
                                 ),
                               ),
@@ -1003,146 +1203,188 @@ class _SchedulePageState extends State<SchedulePage> {
                                 isExpanded: _states[5],
                                 headerBuilder:
                                     (BuildContext context, bool isExpanded) =>
-                                    ListTile(
-                                      visualDensity: VisualDensity(
-                                          horizontal: -4, vertical: -4),
-                                      dense: true,
-                                      minVerticalPadding: 0,
-                                      // lead ing: Icon(FontAwesomeIcons.bookmark),
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          "Saturday",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(right: 5.0),
-                                        child: Divider(
-                                          thickness: 1,
-                                          color: lineColor,
-                                        ),
+                                        ListTile(
+                                  visualDensity: VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  dense: true,
+                                  minVerticalPadding: 0,
+                                  // lead ing: Icon(FontAwesomeIcons.bookmark),
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      "Saturday",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor,
                                       ),
                                     ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: lineColor,
+                                    ),
+                                  ),
+                                ),
                                 body: Container(
                                   height: 270,
                                   // padding: EdgeInsets.only(left: 20, right: 20),
                                   color: blackColor,
                                   child: StreamBuilder(
-                                      stream: FirebaseFirestore.instance.collection("studio").doc("Saturday").collection("schedule").snapshots(),
-
-                                      builder: (BuildContext context , AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                                        return
-                                          !snapshot.hasData?Text("Sorry no show availabe") :
-                                          ListView(
-
-                                            children: snapshot.data!.docs.map((document  ) {
-                                              return Column(
-                                                children: [
-                                                  Column(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("studio")
+                                          .doc("Saturday")
+                                          .collection("schedule")
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        return !snapshot.hasData
+                                            ? Text("Sorry no show availabe")
+                                            : ListView(
+                                                children: snapshot.data!.docs
+                                                    .map((document) {
+                                                  return Column(
                                                     children: [
-                                                      Padding(
-                                                        padding: EdgeInsets.only(
-                                                            left: 20, right: 20),
-                                                        child: ListTile(
-                                                          visualDensity: VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                          dense: true,
-                                                          // visualDensity: ,
-                                                          minVerticalPadding: 0,
-                                                          horizontalTitleGap: 0,
-                                                          minLeadingWidth: 0,
-                                                          trailing: SizedBox(
-                                                            width: 60,
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment.end,
-                                                              children: [
-                                                                GestureDetector(
-                                                                  onTap:() async {
-                                                                    await  showNotification(document,'Saturday');
-
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.notifications,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 8,
-                                                                ),
-                                                                GestureDetector(
-                                                                  onTap: () {
-                                                                    Share.share('rj name : ${document["showname"]} , timings : ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00');
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.share,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          leading: Padding(
+                                                      Column(
+                                                        children: [
+                                                          Padding(
                                                             padding:
-                                                            const EdgeInsets.only(
-                                                                right: 18.0, top: 3),
-                                                            child: Icon(
-                                                              Icons.circle,
-                                                              size: 15,
-                                                              color: redColor,
+                                                                EdgeInsets.only(
+                                                                    left: 20,
+                                                                    right: 20),
+                                                            child: ListTile(
+                                                              visualDensity:
+                                                                  VisualDensity(
+                                                                      horizontal:
+                                                                          -4,
+                                                                      vertical:
+                                                                          -4),
+                                                              dense: true,
+                                                              // visualDensity: ,
+                                                              minVerticalPadding:
+                                                                  0,
+                                                              horizontalTitleGap:
+                                                                  0,
+                                                              minLeadingWidth:
+                                                                  0,
+                                                              trailing:
+                                                                  SizedBox(
+                                                                width: 60,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () async {
+                                                                        await showNotification(
+                                                                            document,
+                                                                            'Saturday');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .notifications,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 8,
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        Share.share(
+                                                                            'rj name : ${document["showname"]} , timings : ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .share,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              leading: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            18.0,
+                                                                        top: 3),
+                                                                child: Icon(
+                                                                  Icons.circle,
+                                                                  size: 15,
+                                                                  color:
+                                                                      redColor,
+                                                                ),
+                                                              ),
+                                                              title: Text(
+                                                                ' ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      redColor,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+
+                                                              subtitle: Text(
+                                                                document[
+                                                                    "showname"],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        10),
+                                                              ),
                                                             ),
                                                           ),
-                                                          title: Text(
-                                                            ' ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00',
-                                                            style: TextStyle(
-                                                              color: redColor,
-                                                              fontSize: 12,
-                                                            ),
-                                                          ),
-
-                                                          subtitle: Text(
-                                                            document["showname"],
-                                                            style: TextStyle(
-                                                                color: whiteColor,
-                                                                fontSize: 10),
-                                                          ),
-                                                        ),
+                                                          document["starttime"] ==
+                                                                  2
+                                                              ? Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    'assets/redline.svg',
+                                                                    // height: 20,
+                                                                    width: 500,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  ),
+                                                                )
+                                                              : Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      Divider(
+                                                                    // endIndent: 30,
+                                                                    thickness:
+                                                                        1,
+                                                                    color:
+                                                                        lineColor,
+                                                                  )),
+                                                        ],
                                                       ),
-
-                                                      document["starttime"]==2?
-                                                      Padding(
-                                                        padding: EdgeInsets.only(left: 20,right: 20),
-                                                        child: SvgPicture.asset(
-                                                          'assets/redline.svg',
-                                                          // height: 20,
-                                                          width: 500,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      )
-
-                                                          :
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              left: 20, right: 20),
-                                                          child: Divider(
-                                                            // endIndent: 30,
-                                                            thickness: 1,
-                                                            color: lineColor,
-                                                          )
-
-                                                      ),
-
-
-                                                    ],
-                                                  ),
-                                                  /*
+                                                      /*
                                                   Padding(
                                                     padding: EdgeInsets.only(left: 20,right: 20),
                                                     child: SvgPicture.asset(
@@ -1154,10 +1396,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                                   ),
 
                                                    */
-                                                ],
+                                                    ],
+                                                  );
+                                                }).toList(),
                                               );
-                                            }).toList(),
-                                          );
                                       }),
                                 ),
                               ),
@@ -1168,145 +1410,188 @@ class _SchedulePageState extends State<SchedulePage> {
                                 isExpanded: _states[6],
                                 headerBuilder:
                                     (BuildContext context, bool isExpanded) =>
-                                    ListTile(
-                                      visualDensity: VisualDensity(
-                                          horizontal: -4, vertical: -4),
-                                      dense: true,
-                                      minVerticalPadding: 0,
-                                      // lead ing: Icon(FontAwesomeIcons.bookmark),
-                                      title: Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          "Sunday",
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: whiteColor,
-                                          ),
-                                        ),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(right: 5.0),
-                                        child: Divider(
-                                          thickness: 1,
-                                          color: lineColor,
-                                        ),
+                                        ListTile(
+                                  visualDensity: VisualDensity(
+                                      horizontal: -4, vertical: -4),
+                                  dense: true,
+                                  minVerticalPadding: 0,
+                                  // lead ing: Icon(FontAwesomeIcons.bookmark),
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      "Sunday",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor,
                                       ),
                                     ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: lineColor,
+                                    ),
+                                  ),
+                                ),
                                 body: Container(
                                   height: 270,
                                   // padding: EdgeInsets.only(left: 20, right: 20),
                                   color: blackColor,
                                   child: StreamBuilder(
-                                      stream: FirebaseFirestore.instance.collection("studio").doc("Sunday").collection("schedule").snapshots(),
-
-                                      builder: (BuildContext context , AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                                        return
-                                          !snapshot.hasData?Text("Sorry no show availabe") :
-                                          ListView(
-
-                                            children: snapshot.data!.docs.map((document  ) {
-                                              return Column(
-                                                children: [
-                                                  Column(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("studio")
+                                          .doc("Sunday")
+                                          .collection("schedule")
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        return !snapshot.hasData
+                                            ? Text("Sorry no show availabe")
+                                            : ListView(
+                                                children: snapshot.data!.docs
+                                                    .map((document) {
+                                                  return Column(
                                                     children: [
-                                                      Padding(
-                                                        padding: EdgeInsets.only(
-                                                            left: 20, right: 20),
-                                                        child: ListTile(
-                                                          visualDensity: VisualDensity(
-                                                              horizontal: -4,
-                                                              vertical: -4),
-                                                          dense: true,
-                                                          // visualDensity: ,
-                                                          minVerticalPadding: 0,
-                                                          horizontalTitleGap: 0,
-                                                          minLeadingWidth: 0,
-                                                          trailing: SizedBox(
-                                                            width: 60,
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment.end,
-                                                              children: [
-                                                                GestureDetector(
-                                                                  onTap:() async {
-                                                                    await  showNotification(document,'Sunday');
-
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.notifications,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 8,
-                                                                ),
-                                                                GestureDetector(
-                                                                  onTap: () {
-                                                                    Share.share('rj name : ${document["showname"]} , timings : ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00');
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.share,
-                                                                    color: redColor,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          leading: Padding(
+                                                      Column(
+                                                        children: [
+                                                          Padding(
                                                             padding:
-                                                            const EdgeInsets.only(
-                                                                right: 18.0, top: 3),
-                                                            child: Icon(
-                                                              Icons.circle,
-                                                              size: 15,
-                                                              color: redColor,
+                                                                EdgeInsets.only(
+                                                                    left: 20,
+                                                                    right: 20),
+                                                            child: ListTile(
+                                                              visualDensity:
+                                                                  VisualDensity(
+                                                                      horizontal:
+                                                                          -4,
+                                                                      vertical:
+                                                                          -4),
+                                                              dense: true,
+                                                              // visualDensity: ,
+                                                              minVerticalPadding:
+                                                                  0,
+                                                              horizontalTitleGap:
+                                                                  0,
+                                                              minLeadingWidth:
+                                                                  0,
+                                                              trailing:
+                                                                  SizedBox(
+                                                                width: 60,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () async {
+                                                                        await showNotification(
+                                                                            document,
+                                                                            'Sunday');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .notifications,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 8,
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        Share.share(
+                                                                            'rj name : ${document["showname"]} , timings : ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00');
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .share,
+                                                                        color:
+                                                                            redColor,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              leading: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            18.0,
+                                                                        top: 3),
+                                                                child: Icon(
+                                                                  Icons.circle,
+                                                                  size: 15,
+                                                                  color:
+                                                                      redColor,
+                                                                ),
+                                                              ),
+                                                              title: Text(
+                                                                ' ${document["starttime"] > 24 ? document["starttime"] - 24 : document["starttime"]}:00 - ${document["endtime"] > 24 ? document["endtime"] - 24 : document["endtime"]}:00',
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      redColor,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+
+                                                              subtitle: Text(
+                                                                document[
+                                                                    "showname"],
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        whiteColor,
+                                                                    fontSize:
+                                                                        10),
+                                                              ),
                                                             ),
                                                           ),
-                                                          title: Text(
-                                                            ' ${document["starttime"]>24?document["starttime"]-24:document["starttime"]}:00 - ${document["endtime"]>24?document["endtime"]-24:document["endtime"]}:00',
-                                                            style: TextStyle(
-                                                              color: redColor,
-                                                              fontSize: 12,
-                                                            ),
-                                                          ),
-
-                                                          subtitle: Text(
-                                                            document["showname"],
-                                                            style: TextStyle(
-                                                                color: whiteColor,
-                                                                fontSize: 10),
-                                                          ),
-                                                        ),
+                                                          document["starttime"] ==
+                                                                  2
+                                                              ? Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      SvgPicture
+                                                                          .asset(
+                                                                    'assets/redline.svg',
+                                                                    // height: 20,
+                                                                    width: 500,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  ),
+                                                                )
+                                                              : Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              20,
+                                                                          right:
+                                                                              20),
+                                                                  child:
+                                                                      Divider(
+                                                                    // endIndent: 30,
+                                                                    thickness:
+                                                                        1,
+                                                                    color:
+                                                                        lineColor,
+                                                                  )),
+                                                        ],
                                                       ),
-                                                      document["starttime"]==2?
-                                                      Padding(
-                                                        padding: EdgeInsets.only(left: 20,right: 20),
-                                                        child: SvgPicture.asset(
-                                                          'assets/redline.svg',
-                                                          // height: 20,
-                                                          width: 500,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      )
-
-                                                          :
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              left: 20, right: 20),
-                                                          child: Divider(
-                                                            // endIndent: 30,
-                                                            thickness: 1,
-                                                            color: lineColor,
-                                                          )
-
-                                                      ),
-
-
-                                                    ],
-                                                  ),
-                                                  /*
+                                                      /*
                                                   Padding(
                                                     padding: EdgeInsets.only(left: 20,right: 20),
                                                     child: SvgPicture.asset(
@@ -1318,10 +1603,10 @@ class _SchedulePageState extends State<SchedulePage> {
                                                   ),
 
                                                    */
-                                                ],
+                                                    ],
+                                                  );
+                                                }).toList(),
                                               );
-                                            }).toList(),
-                                          );
                                       }),
                                 ),
                               ),

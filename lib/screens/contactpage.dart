@@ -11,19 +11,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:app_review/app_review.dart';
 
-List ?data;
+List? data;
 
 class ContactPage extends StatefulWidget {
   const ContactPage({Key? key}) : super(key: key);
-
-
 
   @override
   _ContactPageState createState() => _ContactPageState();
 }
 
 class _ContactPageState extends State<ContactPage> {
-
   bool isLoading = true;
 
   @override
@@ -45,7 +42,8 @@ class _ContactPageState extends State<ContactPage> {
     });
   }
 
-  CollectionReference<Map<String, dynamic>> socialLinks = FirebaseFirestore.instance.collection('socialLinks');
+  CollectionReference<Map<String, dynamic>> socialLinks =
+      FirebaseFirestore.instance.collection('socialLinks');
 
   _launch(String uri) async {
     launch(uri);
@@ -55,19 +53,19 @@ class _ContactPageState extends State<ContactPage> {
     //   throw 'Could not launch $uri';
     // }
   }
-  
-  @override
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: blackColor,
         actions: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               launch('https://www.elitefmlive.com/');
-           },
+            },
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Center(child: Text('Visit Website')),
@@ -110,57 +108,58 @@ class _ContactPageState extends State<ContactPage> {
                 ),
               ),
               Container(
-
                 padding: EdgeInsets.symmetric(horizontal: 20),
-                child:
-                data==null? Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),)):
-                ListView.builder(
-                    itemCount: data==null?0:data!.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Column(
-
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap:(){
-                        launch(data![index]['link']);
-                      },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              // ignore: prefer_const_literals_to_create_immutables
-                              children: [
-                                Text(
-                                  data![index]['title'],
-                                  style: TextStyle(
-                                    color: redColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                child: data == null
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(Colors.white),
+                      ))
+                    : ListView.builder(
+                        itemCount: data == null ? 0 : data!.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  launch(data![index]['link']);
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  // ignore: prefer_const_literals_to_create_immutables
+                                  children: [
+                                    Text(
+                                      data![index]['title'],
+                                      style: TextStyle(
+                                        color: redColor,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: SvgPicture.asset(
+                                        'assets/chat.svg',
+                                        height: 20,
+                                        width: 20,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                GestureDetector(
-                                  onTap: (){
-
-                                  },
-                                  child: SvgPicture.asset(
-                                    'assets/chat.svg',
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Divider(
-                            // indent: 20,
-                            // endIndent: 20,
-                            thickness: 0,
-                            color: lineColor,
-                          ),
-                        ],
-                      );
-                    }),
+                              ),
+                              Divider(
+                                // indent: 20,
+                                // endIndent: 20,
+                                thickness: 0,
+                                color: lineColor,
+                              ),
+                            ],
+                          );
+                        }),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -168,9 +167,7 @@ class _ContactPageState extends State<ContactPage> {
                   IconButton(
                     onPressed: () {
                       socialLinks.doc('Faceboook').get().then((value) {
-
                         return _launch(value.data()!['link']);
-
                       });
                     },
                     icon: FaIcon(
@@ -181,10 +178,9 @@ class _ContactPageState extends State<ContactPage> {
                   IconButton(
                     onPressed: () {
                       socialLinks.doc('Instagram').get().then((value) {
-
                         return _launch(value.data()!['link']);
-
-                      });                    },
+                      });
+                    },
                     icon: FaIcon(
                       FontAwesomeIcons.instagramSquare,
                       color: whiteColor,
@@ -193,9 +189,8 @@ class _ContactPageState extends State<ContactPage> {
                   IconButton(
                     onPressed: () {
                       socialLinks.doc('Whatsapp').get().then((value) {
-
-                        return _launch('https://wa.me/${value.data()!['link']}?text=Hey There!');
-
+                        return _launch(
+                            'https://wa.me/${value.data()!['link']}?text=Hey There!');
                       });
                     },
                     icon: FaIcon(
@@ -206,10 +201,9 @@ class _ContactPageState extends State<ContactPage> {
                   IconButton(
                     onPressed: () {
                       socialLinks.doc('Youtube').get().then((value) {
-
                         return _launch(value.data()!['link']);
-
-                      });;
+                      });
+                      ;
                     },
                     icon: FaIcon(
                       FontAwesomeIcons.youtube,
@@ -218,13 +212,9 @@ class _ContactPageState extends State<ContactPage> {
                   ),
                   IconButton(
                     onPressed: () async {
-
                       socialLinks.doc('Spotify').get().then((value) {
-
-                       return _launch(value.data()!['link']);
-
+                        return _launch(value.data()!['link']);
                       });
-
                     },
                     icon: FaIcon(
                       FontAwesomeIcons.spotify,
@@ -234,11 +224,8 @@ class _ContactPageState extends State<ContactPage> {
                   IconButton(
                     onPressed: () async {
                       socialLinks.doc('Gmail').get().then((value) {
-
-                         _launch("mailto:${value.data()!['link']}");
-
+                        _launch("mailto:${value.data()!['link']}");
                       });
-
                     },
                     icon: FaIcon(
                       FontAwesomeIcons.envelope,
@@ -256,7 +243,6 @@ class _ContactPageState extends State<ContactPage> {
                   final InAppReview inAppReview = InAppReview.instance;
 
                   inAppReview.openStoreListing(appStoreId: '1592092113');
-
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -264,8 +250,8 @@ class _ContactPageState extends State<ContactPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        for(int i=0;i<5;i++)
-                          Icon(Icons.star,color:Colors.white,size:30),
+                        for (int i = 0; i < 5; i++)
+                          Icon(Icons.star, color: Colors.white, size: 30),
                       ],
                     ),
                     SizedBox(
@@ -278,7 +264,6 @@ class _ContactPageState extends State<ContactPage> {
                   ],
                 ),
               ),
-
               SizedBox(
                 height: 200,
               ),
