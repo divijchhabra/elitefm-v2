@@ -1,3 +1,4 @@
+import 'package:elite_fm2/screens/elitefmpage.dart';
 import 'package:elite_fm2/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -32,6 +33,7 @@ class RssData {
 
   play(String url) async {
     if (url != null) {
+      await justplayer.stop();
       await audioPlayer.setUrl(url);
     }
     await audioPlayer.play();

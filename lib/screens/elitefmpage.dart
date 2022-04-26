@@ -24,7 +24,7 @@ double? initVolumee = 0;
 double? maxVolumee = 0;
 double currentVolume = 0;
 bool buttonsListener = false;
-String audioUrl = "http://carina.streamerr.co:8022/stream";
+String audioUrl = "http://carina.streamerr.co:8114/stream";
 bool firstTime = true;
 
 class ElitefmPage extends StatefulWidget {
@@ -96,8 +96,9 @@ class _ElitefmPageState extends State<ElitefmPage> {
     // TODO: implement initState
     // Initial playback. Preloaded playback information
     initPlatformState();
-    updateUrl();
 
+    updateUrl();
+    setSource();
     getName();
     volumeListener();
 
@@ -168,18 +169,30 @@ class _ElitefmPageState extends State<ElitefmPage> {
   }
 
   setSource() async {
-    final _playlist = ConcatenatingAudioSource(children: [
-      AudioSource.uri(
-        Uri.parse(audioUrl),
-        tag: MediaItem(
-            id: 'w2',
-            album: "Live now!",
-            title: "Elite FM",
-            artUri: Uri.parse(
-                "https://images.unsplash.com/photo-1561909381-3d716364ad47?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1463&q=80")),
-      ),
-    ]);
-    await justplayer.setAudioSource(_playlist);
+    if (RssData.audioPlayer.playing){
+      await RssData.audioPlayer.stop();
+      justplayer.setUrl('http://carina.streamerr.co:8114/stream');
+
+    }else{
+      if(!justplayer.playing){
+
+        final _playlist = ConcatenatingAudioSource(children: [
+          AudioSource.uri(
+            Uri.parse(audioUrl),
+            tag: MediaItem(
+                id: 'w2',
+                album: "Live now!",
+                title: "Elite FM",
+                artUri: Uri.parse(
+                    "https://images.unsplash.com/photo-1561909381-3d716364ad47?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1463&q=80")),
+          ),
+        ]);
+        await justplayer.setAudioSource(_playlist);
+      }
+
+    }
+
+
     setState(() {
       firstTime = false;
     });

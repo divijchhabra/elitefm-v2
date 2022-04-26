@@ -117,236 +117,238 @@ class _PodPlayerState extends State<PodPlayer> {
         backgroundColor: blackColor,
         elevation: 0,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 30),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 30),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 180,
+                          width: 180,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      'https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/18432536/18432536-1633461141401-54e40a1b59ce9.jpg'),
+                                  fit: BoxFit.cover)),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          widget.desc.toString().split('</p>')[0].substring(3),
+                          // 'Lorem ipsum  gyutuit tyuitiu sit lot dior lot fyyityu tyuityui diorsit lot dior. Lorem ipsum  gyutuit tyuitiu sit lot dior lot fyyityu tyuityui diorsit lot dior.',
+                          style: TextStyle(color: whiteColor, fontSize: 8),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Flexible(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 65,
+                        ),
+                        Text(
+                          widget.title.toString(),
+                          style: TextStyle(color: redColor, fontSize: 13),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Season ' + widget.season,
+                          style: TextStyle(color: redColor, fontSize: 11),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Episode ' + widget.episode,
+                          style: TextStyle(color: redColor, fontSize: 10),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 180,
-                        width: 180,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    'https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded_nologo/18432536/18432536-1633461141401-54e40a1b59ce9.jpg'),
-                                fit: BoxFit.cover)),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        widget.desc.toString().split('</p>')[0].substring(3),
-                        // 'Lorem ipsum  gyutuit tyuitiu sit lot dior lot fyyityu tyuityui diorsit lot dior. Lorem ipsum  gyutuit tyuitiu sit lot dior lot fyyityu tyuityui diorsit lot dior.',
-                        style: TextStyle(color: whiteColor, fontSize: 8),
-                      ),
-                    ],
+                IconButton(
+                  iconSize: 30,
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.bookmark,
+                    color: whiteColor,
                   ),
                 ),
-                SizedBox(
-                  width: 10,
-                ),
-                Flexible(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 65,
-                      ),
-                      Text(
-                        widget.title.toString(),
-                        style: TextStyle(color: redColor, fontSize: 13),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        'Season ' + widget.season,
-                        style: TextStyle(color: redColor, fontSize: 11),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        'Episode ' + widget.episode,
-                        style: TextStyle(color: redColor, fontSize: 10),
-                      ),
-                    ],
+                IconButton(
+                  iconSize: 30,
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.share,
+                    color: whiteColor,
                   ),
-                ),
+                )
               ],
             ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                iconSize: 30,
-                onPressed: () {},
-                icon: Icon(
-                  Icons.bookmark,
-                  color: whiteColor,
+            SizedBox(
+              height: 35,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 22),
+                  child: Text(
+                    widget.title.toString(),
+                    style: TextStyle(color: whiteColor),
+                  ),
                 ),
-              ),
-              IconButton(
-                iconSize: 30,
-                onPressed: () {},
-                icon: Icon(
-                  Icons.share,
-                  color: whiteColor,
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 35,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 22),
-                child: Text(
-                  widget.title.toString(),
-                  style: TextStyle(color: whiteColor),
-                ),
-              ),
-              Slider(
-                min: 0,
-                max: widget.duration!.inSeconds.toDouble(),
-                value: RssData.position == null
-                    ? 0
-                    : RssData.position!.inSeconds.toDouble(),
-                onChanged: (val) async {
-                  setState(() {
-                    RssData.position = Duration(seconds: val.toInt());
-                    RssData().seek();
-                  });
-                },
-                activeColor: redColor,
-                inactiveColor: Colors.grey[800],
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 22),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      RssData.position.toString().split('.')[0],
-                      style: TextStyle(color: whiteColor, fontSize: 12),
-                    ),
-                    Text(
-                      widget.duration.toString().split('.')[0],
-                      style: TextStyle(color: whiteColor, fontSize: 12),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PodsList()));
-                  },
-                  icon: ImageIcon(
-                    AssetImage('assets/radio-button.png'),
-                    color: whiteColor,
-                    size: 30,
-                  )),
-              IconButton(
-                  onPressed: () async {
-                    print('hello');
-                    if (RssData.position!.inSeconds >= 10) {
-                      RssData.position =
-                          RssData.position! - Duration(seconds: 10);
-                    } else {
-                      RssData.position = Duration(seconds: 0);
-                    }
-                    await RssData().seek();
-                  },
-                  icon: ImageIcon(
-                    AssetImage('assets/previous.png'),
-                    color: whiteColor,
-                    size: 30,
-                  )),
-              IconButton(
-                  iconSize: 100,
-                  onPressed: () async {
-                    RssData().isPlaying();
-                    if (RssData().isPlaying()) {
-                      RssData().pause();
-                      setState(() {
-                        centerbtn = 'playicons.png';
-                      });
-                    } else {
-                      RssData().resume();
-                      setState(() {
-                        centerbtn = 'pauseicon.png';
-                      });
-                    }
-                  },
-                  icon: Image(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/$centerbtn'),
-                  )),
-              IconButton(
-                  onPressed: () async {
-                    print('hello');
-                    if (RssData.position!.inSeconds <=
-                        widget.duration!.inSeconds - 10) {
-                      RssData.position =
-                          RssData.position! + Duration(seconds: 10);
-                    } else {
-                      RssData.position =
-                          Duration(seconds: widget.duration!.inSeconds);
-                    }
-                    await RssData().seek();
-                  },
-                  icon: ImageIcon(
-                    AssetImage('assets/next.png'),
-                    color: whiteColor,
-                    size: 30,
-                  )),
-              IconButton(
-                  onPressed: () async {
-                    if (isRepeat)
-                      await RssData.audioPlayer.setLoopMode(LoopMode.off);
-                    else
-                      await RssData.audioPlayer.setLoopMode(LoopMode.one);
+                Slider(
+                  min: 0,
+                  max: widget.duration!.inSeconds.toDouble(),
+                  value: RssData.position == null
+                      ? 0
+                      : RssData.position!.inSeconds.toDouble(),
+                  onChanged: (val) async {
                     setState(() {
-                      isRepeat = !isRepeat;
+                      RssData.position = Duration(seconds: val.toInt());
+                      RssData().seek();
                     });
                   },
-                  icon: ImageIcon(
-                    AssetImage('assets/repeat.png'),
-                    color: isRepeat ? redColor : whiteColor,
-                    size: 30,
-                  ))
-            ],
-          )
-        ],
+                  activeColor: redColor,
+                  inactiveColor: Colors.grey[800],
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 22),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        RssData.position.toString().split('.')[0],
+                        style: TextStyle(color: whiteColor, fontSize: 12),
+                      ),
+                      Text(
+                        widget.duration.toString().split('.')[0],
+                        style: TextStyle(color: whiteColor, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => PodsList()));
+                    },
+                    icon: ImageIcon(
+                      AssetImage('assets/radio-button.png'),
+                      color: whiteColor,
+                      size: 30,
+                    )),
+                IconButton(
+                    onPressed: () async {
+                      print('hello');
+                      if (RssData.position!.inSeconds >= 10) {
+                        RssData.position =
+                            RssData.position! - Duration(seconds: 10);
+                      } else {
+                        RssData.position = Duration(seconds: 0);
+                      }
+                      await RssData().seek();
+                    },
+                    icon: ImageIcon(
+                      AssetImage('assets/previous.png'),
+                      color: whiteColor,
+                      size: 30,
+                    )),
+                IconButton(
+                    iconSize: 100,
+                    onPressed: () async {
+                      RssData().isPlaying();
+                      if (RssData().isPlaying()) {
+                        RssData().pause();
+                        setState(() {
+                          centerbtn = 'playicons.png';
+                        });
+                      } else {
+                        RssData().resume();
+                        setState(() {
+                          centerbtn = 'pauseicon.png';
+                        });
+                      }
+                    },
+                    icon: Image(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/$centerbtn'),
+                    )),
+                IconButton(
+                    onPressed: () async {
+                      print('hello');
+                      if (RssData.position!.inSeconds <=
+                          widget.duration!.inSeconds - 10) {
+                        RssData.position =
+                            RssData.position! + Duration(seconds: 10);
+                      } else {
+                        RssData.position =
+                            Duration(seconds: widget.duration!.inSeconds);
+                      }
+                      await RssData().seek();
+                    },
+                    icon: ImageIcon(
+                      AssetImage('assets/next.png'),
+                      color: whiteColor,
+                      size: 30,
+                    )),
+                IconButton(
+                    onPressed: () async {
+                      if (isRepeat)
+                        await RssData.audioPlayer.setLoopMode(LoopMode.off);
+                      else
+                        await RssData.audioPlayer.setLoopMode(LoopMode.one);
+                      setState(() {
+                        isRepeat = !isRepeat;
+                      });
+                    },
+                    icon: ImageIcon(
+                      AssetImage('assets/repeat.png'),
+                      color: isRepeat ? redColor : whiteColor,
+                      size: 30,
+                    ))
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

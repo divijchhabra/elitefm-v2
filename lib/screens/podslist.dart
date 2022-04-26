@@ -62,26 +62,35 @@ class _PodsListState extends State<PodsList> {
       backgroundColor: blackColor,
       body: Column(
         children: [
+          SizedBox(height: 20,),
           Container(
             color: blackColor,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Text(
+                  'BackStage with Elite',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: whiteColor,
+                    fontSize: 23,
+                  ),
+                ),
                 Center(
-                  child: Column(
-                    children: [
-                      mainTitle('Title', 130),
-                      // Divider(
-                      //   thickness: 3,
-                      //   indent: MediaQuery.of(context).size.width / 3,
-                      //   endIndent: 100,
-                      //   color: redColor,
-                      // )
-                    ],
+                  child: SizedBox(
+                    width: 200,
+                    child: Divider(
+                      thickness: 4,
+                      color: redColor,
+                      // indent: 30,
+                      // endIndent: 90,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+          SizedBox(height: 20,),
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, ind) => PodTile(
