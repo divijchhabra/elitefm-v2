@@ -169,34 +169,40 @@ class _ElitefmPageState extends State<ElitefmPage> {
   }
 
   setSource() async {
-    if (RssData.audioPlayer.playing){
+    bool rss=false;
+
+    if (RssData.audioPlayer.playing) {
       await RssData.audioPlayer.stop();
-      justplayer.setUrl('http://carina.streamerr.co:8114/stream');
+      await justplayer.setUrl('http://carina.streamerr.co:8114/stream');
+      await justplayer.play();
+      rss=true;
+    }
 
-    }else{
-      if(!justplayer.playing){
+      else if(rss==false){
 
-        final _playlist = ConcatenatingAudioSource(children: [
-          AudioSource.uri(
-            Uri.parse(audioUrl),
-            tag: MediaItem(
-                id: 'w2',
-                album: "Live now!",
-                title: "Elite FM",
-                artUri: Uri.parse(
-                    "https://images.unsplash.com/photo-1561909381-3d716364ad47?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1463&q=80")),
-          ),
-        ]);
-        await justplayer.setAudioSource(_playlist);
+
+        await justplayer.setAudioSource( AudioSource.uri(
+          Uri.parse(audioUrl),
+          tag: MediaItem(
+              id: 'w2',
+              album: "Live now!",
+              title: "Elite FM",
+              artUri: Uri.parse(
+                  "https://images.unsplash.com/photo-1561909381-3d716364ad47?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1463&q=80")),
+        )
+        );
+        await justplayer.play();
+
       }
 
-    }
+
 
 
     setState(() {
       firstTime = false;
     });
   }
+
 
   Future<void> _init() async {
     // Inform the operating system of our app's audio attributes etc.
@@ -400,7 +406,7 @@ class _ElitefmPageState extends State<ElitefmPage> {
                                       } else if (!justplayer.playing) {
                                         if (Platform.isAndroid)
                                           Vibration.vibrate(duration: 50);
-                                        if (firstTime) setSource();
+                                        // if (firstTime) setSource();
 
                                         justplayer.play();
                                         setState(() {
@@ -508,7 +514,7 @@ class _ElitefmPageState extends State<ElitefmPage> {
                     ),
 
                     Text(
-                      showname.isEmpty ? "wait" : showname,
+                      showname.isEmpty ? "Loading..." : showname,
                       style: TextStyle(color: whiteColor, fontSize: 15),
                     ),
                     // SizedBox(

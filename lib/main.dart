@@ -17,6 +17,11 @@ bool goToBlog = false;
 void main() async {
   // await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   WidgetsFlutterBinding.ensureInitialized();
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
 
   await Firebase.initializeApp();
   try {
